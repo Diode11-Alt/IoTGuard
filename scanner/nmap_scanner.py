@@ -59,6 +59,10 @@ class NmapScanner:
         }
         
         try:
+            import re
+            if not re.match(r'^\d+(-\d+)?$', str(port_range)):
+                raise ValueError("Invalid port range format")
+                
             scan_args = f'-sV --version-intensity 3 -p {port_range}'
             self.scanner.scan(hosts=target_ip, arguments=scan_args, timeout=self.scan_timeout)
             

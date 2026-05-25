@@ -38,9 +38,12 @@ def start_scan():
         if not subnet:
             return "Subnet is required", 400
             
-        
         if not nmap_scanner.validate_subnet(subnet):
             return "Invalid subnet format. Please use CIDR notation (e.g., 192.168.1.0/24)", 400
+            
+        import re
+        if not re.match(r'^\d+(-\d+)?$', port_range):
+            return "Invalid port range format. Use '80' or '1-1000'.", 400
         
         
         logger.info(f"Starting scan for subnet {subnet} with port range {port_range}")
@@ -199,4 +202,4 @@ def internal_error(error):
 
 if __name__ == '__main__':
     logger.info("Starting IoTGuard application...")
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=False, host='127.0.0.1', port=5000)
